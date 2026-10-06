@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { CreateResearchBody, CreateResearchResponse } from "@workspace/api-zod";
-import { Router, type IRouter } from "express";
+import { Router } from "express";
 
-const router: IRouter = Router();
+const router = Router();
 
 type TavilyResult = {
   title?: string | null;
