@@ -3,8 +3,10 @@ import { Router, type Request, type Response } from "express";
 const router = Router();
 
 router.get("/healthz", (_req: Request, res: Response) => {
-  res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify({ status: "ok" }));
+  const jsonResponse = res as unknown as {
+    json: (body: { status: string }) => void;
+  };
+  jsonResponse.json({ status: "ok" });
 });
 
 export default router;
