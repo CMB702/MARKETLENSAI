@@ -1,0 +1,10 @@
+[build]
+  command = "pnpm --filter @workspace/api-server build && pnpm --filter @workspace/marketlens build"
+  publish = "artifacts/marketlens/dist/public"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  node_bundler = "esbuild"

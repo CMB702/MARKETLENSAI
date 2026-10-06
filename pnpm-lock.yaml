@@ -158,9 +158,18 @@ importers:
 
   .:
     dependencies:
+      '@netlify/aws-lambda-compat':
+        specifier: ^2.0.2
+        version: 2.0.2
+      '@netlify/functions':
+        specifier: ^6.0.2
+        version: 6.0.2
       '@replit/connectors-sdk':
         specifier: ^0.4.3
         version: 0.4.3
+      serverless-http:
+        specifier: ^4.0.0
+        version: 4.0.0
     devDependencies:
       prettier:
         specifier: ^3.9.6
@@ -799,6 +808,18 @@ packages:
     cpu: [x64]
     os: [linux]
     libc: [glibc]
+
+  '@netlify/aws-lambda-compat@2.0.2':
+    resolution: {integrity: sha512-LAyM6Q/uN4kTGzHAZo7sOT86iJls8QntjQFE9HLetu/cGxD3gmpOXrI+rOfpMtU27JK5P1lktCV/cRp0UeJ3pA==}
+    engines: {node: '>=22.12.0'}
+
+  '@netlify/functions@6.0.2':
+    resolution: {integrity: sha512-JqbPgAOt2GAwzCEitdEWAHOn6AkZ0Rna401wdAyuDIBiDv9M03b3Cu5mGH7/eHOmIXfZIcN1pG35flHjfu6asQ==}
+    engines: {node: '>=22.12.0'}
+
+  '@netlify/types@3.2.0':
+    resolution: {integrity: sha512-PVvY1EEN9i2Er0LQoiyNG7i/BnwnttLuZqIkBnhL2Jrcj3P5N/NcGkv1i20MJ2ngNGSPQcT7tagDmF3V6BsdWg==}
+    engines: {node: '>=22.12.0'}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2833,6 +2854,10 @@ packages:
     resolution: {integrity: sha512-xRXBn0pPqQTVQiC8wyQrKs2MOlX24zQ0POGaj0kultvoOCstBQM5yvOhAVSUwOMjQtTvsPWoNCHfPGwaaQJhTw==}
     engines: {node: '>= 18'}
 
+  serverless-http@4.0.0:
+    resolution: {integrity: sha512-KKl9h1+VApX9y2vHsVMogf906UXBwO3FDYiWPzqS0mCjEEx4Sx91JrssbWA7RN43HBuxrtoh8MkocZPvjyGnLg==}
+    engines: {node: '>=12.0'}
+
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
 
@@ -3291,6 +3316,16 @@ snapshots:
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     optional: true
+
+  '@netlify/aws-lambda-compat@2.0.2':
+    dependencies:
+      '@netlify/types': 3.2.0
+
+  '@netlify/functions@6.0.2':
+    dependencies:
+      '@netlify/types': 3.2.0
+
+  '@netlify/types@3.2.0': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -5366,6 +5401,8 @@ snapshots:
       send: 1.2.1
     transitivePeerDependencies:
       - supports-color
+
+  serverless-http@4.0.0: {}
 
   setprototypeof@1.2.0: {}
 

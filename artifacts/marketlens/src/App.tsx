@@ -389,7 +389,7 @@ function ReportView({ report, lang, onNew, onCopy, copied }: { report: ResearchR
 
         <div className="grid gap-5 md:grid-cols-2">
           <article className="rounded-2xl border border-border bg-card p-5 sm:p-6">
-            <SectionTitle icon={Globe2}>{t.marketSize}</SectionTitle>
+            <SectionTitle icon={Globe2}>{t.marketSize} · {report.country}</SectionTitle>
             <p className="font-display text-[25px] font-bold leading-tight tracking-[-.04em] text-brand-title">{report.marketSize?.estimate || '—'}</p>
             <span className="mt-3 inline-flex rounded-full bg-surface-warning px-2.5 py-1 text-[10px] font-bold text-warning-ink">{t.estimate}</span>
             <p className="mt-3 text-xs leading-5 text-muted-foreground">{report.marketSize?.caveat || t.estimateNote}</p>
