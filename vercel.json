@@ -1,9 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm --filter @workspace/marketlens build",
+  "buildCommand": "pnpm --filter @workspace/api-server build && pnpm --filter @workspace/marketlens build",
   "outputDirectory": "artifacts/marketlens/dist/public",
   "functions": {
-    "api/[...path].ts": {
+    "api/**/*.js": {
       "maxDuration": 60
     }
   }
