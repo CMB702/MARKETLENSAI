@@ -1,0 +1,340 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: research
+    description: Source-grounded market research
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /research:
+    post:
+      operationId: createResearch
+      tags: [research]
+      summary: Research a product, service, or business idea
+      description: Searches current public web sources and generates a cited market research report.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResearchInput"
+      responses:
+        "200":
+          description: Market research report
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResearchReport"
+        "400":
+          description: Invalid research request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: A free provider quota or rate limit was reached
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "502":
+          description: A provider failed or returned unusable data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "503":
+          description: Required free-tier provider setup is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    ResearchInput:
+      type: object
+      additionalProperties: false
+      properties:
+        query:
+          type: string
+          minLength: 2
+          maxLength: 160
+          description: Product, service, or business idea to research
+        country:
+          type: string
+          minLength: 2
+          maxLength: 80
+        language:
+          type: string
+          enum: [hi, en]
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+          pattern: "^[A-Z]{3}$"
+        sellingPrice:
+          type: number
+          minimum: 0.01
+        directCost:
+          type: number
+          minimum: 0
+      required: [query, country, language]
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        error:
+          type: string
+      required: [code, error]
+    ResearchSource:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        domain:
+          type: string
+        publishedDate:
+          type: ["string", "null"]
+        excerpt:
+          type: string
+      required: [id, title, url, domain, publishedDate, excerpt]
+    MarketOutlook:
+      type: object
+      additionalProperties: false
+      properties:
+        signal:
+          type: string
+          enum: [growing, stable, declining, mixed, unclear]
+        insight:
+          type: string
+        confidence:
+          type: string
+          enum: [high, medium, low]
+        sourceIds:
+          type: array
+          items:
+            type: string
+      required: [signal, insight, confidence, sourceIds]
+    MarketSize:
+      type: object
+      additionalProperties: false
+      properties:
+        estimate:
+          type: string
+        caveat:
+          type: string
+        confidence:
+          type: string
+          enum: [high, medium, low]
+        sourceIds:
+          type: array
+          items:
+            type: string
+      required: [estimate, caveat, confidence, sourceIds]
+    Competitor:
+      type: object
+      additionalProperties: false
+      properties:
+        brand:
+          type: string
+        offer:
+          type: string
+        pricePosition:
+          type: string
+        positioning:
+          type: string
+        sourceIds:
+          type: array
+          items:
+            type: string
+      required: [brand, offer, pricePosition, positioning, sourceIds]
+    CustomerNeed:
+      type: object
+      additionalProperties: false
+      properties:
+        need:
+          type: string
+        evidence:
+          type: string
+        sourceIds:
+          type: array
+          items:
+            type: string
+      required: [need, evidence, sourceIds]
+    Opportunity:
+      type: object
+      additionalProperties: false
+      properties:
+        opportunity:
+          type: string
+        rationale:
+          type: string
+        sourceIds:
+          type: array
+          items:
+            type: string
+      required: [opportunity, rationale, sourceIds]
+    MarketRisk:
+      type: object
+      additionalProperties: false
+      properties:
+        risk:
+          type: string
+        severity:
+          type: string
+          enum: [high, medium, low]
+        rationale:
+          type: string
+        sourceIds:
+          type: array
+          items:
+            type: string
+      required: [risk, severity, rationale, sourceIds]
+    Profitability:
+      type: object
+      additionalProperties: false
+      properties:
+        verdict:
+          type: string
+          enum: [promising, uncertain, challenging]
+        summary:
+          type: string
+        directCostDrivers:
+          type: array
+          items:
+            type: string
+        sourceIds:
+          type: array
+          items:
+            type: string
+        grossMarginPercent:
+          type: ["number", "null"]
+        calculationNote:
+          type: string
+        currency:
+          type: string
+      required:
+        - verdict
+        - summary
+        - directCostDrivers
+        - sourceIds
+        - grossMarginPercent
+        - calculationNote
+        - currency
+    ValidationTest:
+      type: object
+      additionalProperties: false
+      properties:
+        hypothesis:
+          type: string
+        test:
+          type: string
+        successSignal:
+          type: string
+      required: [hypothesis, test, successSignal]
+    ResearchReport:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        subject:
+          type: string
+        country:
+          type: string
+        generatedAt:
+          type: string
+          format: date-time
+        category:
+          type: string
+        summary:
+          type: string
+        marketOutlook:
+          $ref: "#/components/schemas/MarketOutlook"
+        marketSize:
+          $ref: "#/components/schemas/MarketSize"
+        competitors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Competitor"
+        customerNeeds:
+          type: array
+          items:
+            $ref: "#/components/schemas/CustomerNeed"
+        opportunities:
+          type: array
+          items:
+            $ref: "#/components/schemas/Opportunity"
+        risks:
+          type: array
+          items:
+            $ref: "#/components/schemas/MarketRisk"
+        profitability:
+          $ref: "#/components/schemas/Profitability"
+        validationPlan:
+          type: array
+          minItems: 3
+          maxItems: 3
+          items:
+            $ref: "#/components/schemas/ValidationTest"
+        sources:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResearchSource"
+        limitations:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - subject
+        - country
+        - generatedAt
+        - category
+        - summary
+        - marketOutlook
+        - marketSize
+        - competitors
+        - customerNeeds
+        - opportunities
+        - risks
+        - profitability
+        - validationPlan
+        - sources
+        - limitations
+
